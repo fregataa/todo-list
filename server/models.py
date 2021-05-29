@@ -3,9 +3,10 @@ from sqlalchemy.orm import relationship
 
 from .database import Base
 
+
 class User(Base):
 
-    # The __tablename__ attribute tells SQLAlchemy the name of 
+    # The __tablename__ attribute tells SQLAlchemy the name of
     # the table to use in the database for each of these models.
 
     __tablename__ = "users"
@@ -16,6 +17,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     todos = relationship("Todo", back_populates="owner")
+
 
 class Todo(Base):
     __tablename__ = "todos"

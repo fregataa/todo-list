@@ -5,10 +5,8 @@ from sqlalchemy.orm import Session
 
 import uvicorn
 
-from .schemas import Todo
-
-from . import crud, models, schemas
-from .database import SessionLocal, engine
+import crud, models, schemas
+from database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -33,6 +31,9 @@ def read_root():
 def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
 
+@app.get("/users/{email}")
+def read_user(email: str, db: Session = Depends(get_db)):
+    return crud.get_user_by_email(db, email=email)
 
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):

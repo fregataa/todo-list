@@ -9,7 +9,7 @@ class TodoBase(BaseModel):
     description: Optional[str] = None
 
 
-class TodaCreate(TodoBase):
+class TodoCreate(TodoBase):
     pass
 
 

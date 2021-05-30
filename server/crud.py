@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from . import models, schemas
+import models, schemas
 
 
 def get_user_by_email(db: Session, email: str):
@@ -21,7 +21,7 @@ def get_todos(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Todo).offset(skip).limit(limit).all()
 
 
-def create_user_todo(db: Session, todo: schemas.TodaCreate, user_id: int):
+def create_user_todo(db: Session, todo: schemas.TodoCreate, user_id: int):
     db_todo = models.Todo(**todo.dict(), owner_id=user_id)
     db.add(db_todo)
     db.commit()

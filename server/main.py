@@ -1,3 +1,4 @@
+import asyncio
 from typing import Optional, List
 
 from fastapi import FastAPI, Depends, HTTPException
@@ -6,10 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 import uvicorn
 
-import crud, models, schemas
-from database import AsyncSessionLocal, engine
+import crud, schemas
+from database import AsyncSessionLocal, engine, init_db
 
-models.Base.metadata.create_all(bind=engine)
+# models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -24,12 +25,12 @@ def get_db():
 
 
 @app.get("/")
-def read_root():
+async def read_root():
     return {"Hello": "World"}
 
 
 @app.get("/items/{item_id}")
-def read_item(item_id: int, q: Optional[str] = None):
+async def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
 
 
@@ -86,3 +87,5 @@ if __name__ == "__main__":
                 port=5005,
                 log_level="info",
                 reload=True)
+
+    asyncio.run(init_db())
